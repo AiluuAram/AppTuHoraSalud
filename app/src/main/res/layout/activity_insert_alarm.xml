@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollInsertAlarm"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo3">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Icono de alarma"
+            android:src="@drawable/usuario" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Medicamento"
+            android:textColor="#0D47A1"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/spinnerMedicine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="#40FFFFFF"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/inputDose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="#40FFFFFF"
+            android:hint="Dosis (ej: 1 pastilla, 5 ml)"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Horario"
+            android:textColor="#0D47A1"
+            android:textSize="14sp" />
+
+        <TimePicker
+            android:id="@+id/timePickerAlarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:timePickerMode="spinner" />
+
+        <Button
+            android:id="@+id/btnSaveAlarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#278EF5"
+            android:minHeight="48dp"
+            android:padding="12dp"
+            android:text="Guardar Alarma"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+</ScrollView>
