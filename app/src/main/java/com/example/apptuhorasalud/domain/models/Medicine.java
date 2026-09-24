@@ -6,6 +6,7 @@ public class Medicine {
     private int quantity;
     private int userId;
     private boolean isDeleted;
+    private int stockMinimo = 5;
 
     public Medicine(int id, String name, int quantity, int userId, boolean isDeleted) {
         this.id = id;
@@ -15,43 +16,23 @@ public class Medicine {
         this.isDeleted = isDeleted;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
-    public int getQuantity() {
-        return quantity;
-    }
+    public boolean isDeleted() { return isDeleted; }
+    public void setDeleted(boolean deleted) { isDeleted = deleted; }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    public int getStockMinimo() { return stockMinimo; }
+    public void setStockMinimo(int stockMinimo) { this.stockMinimo = stockMinimo; }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
+    public boolean isStockBajo() { return quantity <= stockMinimo; }
 }

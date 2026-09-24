@@ -130,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         buttonIngresoStock.setOnClickListener(v -> {
-            Intent intentIngreso = new Intent(this, InsertIngresoStockActivity.class);
+            Intent intentIngreso = new Intent(this, ListIngresosStockActivity.class);
             intentIngreso.putExtra("idUsuario", idUsuario);
             startActivity(intentIngreso);
         });

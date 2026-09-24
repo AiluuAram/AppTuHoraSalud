@@ -37,6 +37,17 @@
                 android:textSize="14sp"
                 android:layout_marginTop="4dp" />
 
+            <TextView
+                android:id="@+id/tvStockBajo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="⚠ Stock bajo, reponé unidades"
+                android:textColor="#D32F2F"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
         </LinearLayout>
 
         <Button

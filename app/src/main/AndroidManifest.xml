@@ -52,6 +52,12 @@
             android:name=".InsertIngresoStockActivity"
             android:exported="false" />
         <activity
+            android:name=".ListIngresosStockActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateIngresoStockActivity"
+            android:exported="false" />
+        <activity
             android:name=".InsertAlarmActivity"
             android:exported="false" />
         <activity

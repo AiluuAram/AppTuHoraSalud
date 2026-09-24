@@ -42,7 +42,14 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     public void onBindViewHolder(@NonNull MedicineViewHolder holder, int position) {
         Medicine medicine = medicineList.get(position);
         holder.tvMedicineName.setText(medicine.getName());
-        holder.tvMedicineQuantity.setText("Cantidad: " + medicine.getQuantity());
+        holder.tvMedicineQuantity.setText("Cantidad: " + medicine.getQuantity() + " (mínimo: " + medicine.getStockMinimo() + ")");
+
+        // Alerta de stock bajo (HU05): aparece si el stock es menor o igual al mínimo
+        if (medicine.isStockBajo()) {
+            holder.tvStockBajo.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvStockBajo.setVisibility(View.GONE);
+        }
 
         holder.btnUpdateMedicine.setOnClickListener(v -> {
             Context context = holder.itemView.getContext();
@@ -50,12 +57,12 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
             intent.putExtra("medicineId", medicine.getId());
             intent.putExtra("medicineName", medicine.getName());
             intent.putExtra("medicineQuantity", medicine.getQuantity());
+            intent.putExtra("medicineStockMinimo", medicine.getStockMinimo());
             intent.putExtra("idUsuario", medicine.getUserId());
             context.startActivity(intent);
         });
 
         holder.btnDeleteMedicine.setOnClickListener(v -> {
-            // Delete action will be implemented later
             repo.softDeleteMedicine(medicine);
             medicineList.remove(medicine);
             notifyDataSetChanged();
@@ -73,13 +80,14 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     }
 
     static class MedicineViewHolder extends RecyclerView.ViewHolder {
-        TextView tvMedicineName, tvMedicineQuantity;
+        TextView tvMedicineName, tvMedicineQuantity, tvStockBajo;
         Button btnUpdateMedicine, btnDeleteMedicine;
 
         public MedicineViewHolder(@NonNull View itemView) {
             super(itemView);
             tvMedicineName = itemView.findViewById(R.id.tvMedicineName);
             tvMedicineQuantity = itemView.findViewById(R.id.tvMedicineQuantity);
+            tvStockBajo = itemView.findViewById(R.id.tvStockBajo);
             btnUpdateMedicine = itemView.findViewById(R.id.btnUpdateMedicine);
             btnDeleteMedicine = itemView.findViewById(R.id.btnDeleteMedicine);
         }

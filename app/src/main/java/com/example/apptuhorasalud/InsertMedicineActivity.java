@@ -20,10 +20,10 @@ import com.example.apptuhorasalud.utils.FormUtils;
 
 public class InsertMedicineActivity extends AppCompatActivity {
 
-    private EditText inputMedicineName, inputQuantity;
+    private EditText inputMedicineName, inputQuantity, inputStockMinimo;
     private Button btnSaveMedicine;
 
-    private String medicineName, quantity;
+    private String medicineName, quantity, stockMinimoStr;
     private int userId;
 
     private static final String DB_NAME = "usuarios-db";
@@ -42,15 +42,14 @@ public class InsertMedicineActivity extends AppCompatActivity {
 
         inputMedicineName = findViewById(R.id.inputMedicineName);
         inputQuantity = findViewById(R.id.inputQuantity);
+        inputStockMinimo = findViewById(R.id.inputStockMinimo);
         btnSaveMedicine = findViewById(R.id.btnSaveMedicine);
 
-        // Get userId from intent
         userId = getIntent().getIntExtra("idUsuario", -1);
 
         btnSaveMedicine.setOnClickListener(v -> onSaveMedicineClick());
     }
 
-    // methods
     private void onSaveMedicineClick() {
         getValues();
         if (!validateInput()) return;
@@ -60,6 +59,7 @@ public class InsertMedicineActivity extends AppCompatActivity {
     private void getValues() {
         medicineName = inputMedicineName.getText().toString().trim();
         quantity = inputQuantity.getText().toString().trim();
+        stockMinimoStr = inputStockMinimo.getText().toString().trim();
     }
 
     private boolean validateInput() {
@@ -89,6 +89,19 @@ public class InsertMedicineActivity extends AppCompatActivity {
             return false;
         }
 
+        if (!TextUtils.isEmpty(stockMinimoStr)) {
+            try {
+                int min = Integer.parseInt(stockMinimoStr);
+                if (min < 0) {
+                    FormUtils.showError(this, "El stock mínimo no puede ser negativo", inputStockMinimo);
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                FormUtils.showError(this, "El stock mínimo debe ser un número válido", inputStockMinimo);
+                return false;
+            }
+        }
+
         if (userId == -1) {
             Toast.makeText(this, "Error: Usuario no identificado", Toast.LENGTH_SHORT).show();
             return false;
@@ -98,14 +111,17 @@ public class InsertMedicineActivity extends AppCompatActivity {
     }
 
     private void saveMedicine() {
+        int stockMinimo = TextUtils.isEmpty(stockMinimoStr) ? 5 : Integer.parseInt(stockMinimoStr);
+
         Medicine medicine = new Medicine(0, medicineName, Integer.parseInt(quantity), userId, false);
+        medicine.setStockMinimo(stockMinimo);
 
         new Thread(() -> {
             AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, DB_NAME).build();
             IMedicineRepository repo = new MedicineRepositoryImpl(db.medicineDao());
 
             repo.addMedicine(medicine).join();
-            Log.d("DB", "Medicamento guardado correctamente: " + medicine.getName() + " - Cantidad: " + medicine.getQuantity());
+            Log.d("DB", "Medicamento guardado: " + medicine.getName() + " - Cantidad: " + medicine.getQuantity() + " - Mínimo: " + medicine.getStockMinimo());
 
             runOnUiThread(() -> {
                 FormUtils.showSuccess(this, "Medicamento guardado correctamente");

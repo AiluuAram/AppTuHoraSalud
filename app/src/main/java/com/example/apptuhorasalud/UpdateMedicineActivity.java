@@ -20,10 +20,10 @@ import com.example.apptuhorasalud.utils.FormUtils;
 
 public class UpdateMedicineActivity extends AppCompatActivity {
 
-    private EditText inputMedicineName, inputQuantity;
+    private EditText inputMedicineName, inputQuantity, inputStockMinimo;
     private Button btnUpdateMedicine;
 
-    private String medicineName, quantity;
+    private String medicineName, quantity, stockMinimoStr;
     private int userId;
     private int medicineId;
 
@@ -43,24 +43,24 @@ public class UpdateMedicineActivity extends AppCompatActivity {
 
         inputMedicineName = findViewById(R.id.inputMedicineName);
         inputQuantity = findViewById(R.id.inputQuantity);
+        inputStockMinimo = findViewById(R.id.inputStockMinimo);
         btnUpdateMedicine = findViewById(R.id.btnUpdateMedicine);
 
-        // Get data from intent
         userId = getIntent().getIntExtra("idUsuario", -1);
         medicineId = getIntent().getIntExtra("medicineId", -1);
         String currentName = getIntent().getStringExtra("medicineName");
         int currentQuantity = getIntent().getIntExtra("medicineQuantity", 0);
+        int currentStockMinimo = getIntent().getIntExtra("medicineStockMinimo", 5);
 
-        // Pre-populate fields with current data
         if (currentName != null) {
             inputMedicineName.setText(currentName);
         }
         inputQuantity.setText(String.valueOf(currentQuantity));
+        inputStockMinimo.setText(String.valueOf(currentStockMinimo));
 
         btnUpdateMedicine.setOnClickListener(v -> onUpdateMedicineClick());
     }
 
-    // methods
     private void onUpdateMedicineClick() {
         getValues();
         if (!validateInput()) return;
@@ -70,6 +70,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     private void getValues() {
         medicineName = inputMedicineName.getText().toString().trim();
         quantity = inputQuantity.getText().toString().trim();
+        stockMinimoStr = inputStockMinimo.getText().toString().trim();
     }
 
     private boolean validateInput() {
@@ -99,6 +100,19 @@ public class UpdateMedicineActivity extends AppCompatActivity {
             return false;
         }
 
+        if (!TextUtils.isEmpty(stockMinimoStr)) {
+            try {
+                int min = Integer.parseInt(stockMinimoStr);
+                if (min < 0) {
+                    FormUtils.showError(this, "El stock mínimo no puede ser negativo", inputStockMinimo);
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                FormUtils.showError(this, "El stock mínimo debe ser un número válido", inputStockMinimo);
+                return false;
+            }
+        }
+
         if (userId == -1 || medicineId == -1) {
             Toast.makeText(this, "Error: Datos incompletos", Toast.LENGTH_SHORT).show();
             return false;
@@ -108,14 +122,17 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     }
 
     private void updateMedicine() {
+        int stockMinimo = TextUtils.isEmpty(stockMinimoStr) ? 5 : Integer.parseInt(stockMinimoStr);
+
         Medicine medicine = new Medicine(medicineId, medicineName, Integer.parseInt(quantity), userId, false);
+        medicine.setStockMinimo(stockMinimo);
 
         new Thread(() -> {
             AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, DB_NAME).build();
             IMedicineRepository repo = new MedicineRepositoryImpl(db.medicineDao());
 
             repo.updateMedicine(medicine).join();
-            Log.d("DB", "Medicamento actualizado correctamente: " + medicine.getName() + " - Cantidad: " + medicine.getQuantity());
+            Log.d("DB", "Medicamento actualizado: " + medicine.getName() + " - Cantidad: " + medicine.getQuantity() + " - Mínimo: " + medicine.getStockMinimo());
 
             runOnUiThread(() -> {
                 FormUtils.showSuccess(this, "Medicamento actualizado correctamente");
