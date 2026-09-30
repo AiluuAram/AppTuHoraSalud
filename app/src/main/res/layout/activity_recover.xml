@@ -10,7 +10,7 @@
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/fondo3">
+        android:background="@drawable/fondo6">
 
         <ImageView
             android:id="@+id/imgLogo"

@@ -10,7 +10,7 @@
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/fondo3">
+        android:background="@drawable/fondo5">
 
         <ImageView
             android:id="@+id/imgLogo"
@@ -37,7 +37,6 @@
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp"
                 android:padding="12dp"
-                android:text="milyalvarez.26@gmail.com"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,7 +56,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:minHeight="48dp"
-                android:text="12345"
                 android:padding="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
