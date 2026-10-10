@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="⚠ Stock bajo, reponé unidades"
-                android:textColor="#D32F2F"
+                android:textColor="#F57C00"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -64,7 +64,7 @@
             android:id="@+id/btnDeleteMedicine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#F44336"
+            android:backgroundTint="#D32F2F"
             android:minHeight="48dp"
             android:text="Eliminar"
             android:textColor="#FFFFFF" />
