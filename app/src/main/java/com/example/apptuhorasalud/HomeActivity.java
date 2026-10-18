@@ -41,6 +41,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button addMedicineButton;
     private Button addAlarmButton;
     private Button buttonIngresoStock;
+    private Button buttonInforme;
     private RecyclerView recyclerViewAlarms;
     private TextView tvEmptyAlarms;
     private EditText etFilterMedicineName;
@@ -74,6 +75,7 @@ public class HomeActivity extends AppCompatActivity {
         addMedicineButton = findViewById(R.id.buttonMedicine);
         addAlarmButton = findViewById(R.id.buttonAlarm);
         buttonIngresoStock = findViewById(R.id.buttonIngresoStock);
+        buttonInforme = findViewById(R.id.buttonInforme);
         recyclerViewAlarms = findViewById(R.id.recyclerViewAlarms);
         tvEmptyAlarms = findViewById(R.id.tvEmptyAlarms);
         etFilterMedicineName = findViewById(R.id.etFilterMedicineName);
@@ -133,6 +135,12 @@ public class HomeActivity extends AppCompatActivity {
             Intent intentIngreso = new Intent(this, ListIngresosStockActivity.class);
             intentIngreso.putExtra("idUsuario", idUsuario);
             startActivity(intentIngreso);
+        });
+
+        buttonInforme.setOnClickListener(v -> {
+            Intent intentInforme = new Intent(this, InformeStockActivity.class);
+            intentInforme.putExtra("idUsuario", idUsuario);
+            startActivity(intentInforme);
         });
     }
 
