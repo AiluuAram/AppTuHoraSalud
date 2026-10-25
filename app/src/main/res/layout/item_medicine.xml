@@ -71,4 +71,13 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnIngresoMedicine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#2E7D32"
+        android:text="+ Registrar ingreso"
+        android:textColor="#FFFFFF" />
+
 </LinearLayout>

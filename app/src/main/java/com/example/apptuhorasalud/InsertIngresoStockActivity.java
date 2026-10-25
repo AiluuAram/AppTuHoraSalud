@@ -38,6 +38,7 @@ public class InsertIngresoStockActivity extends AppCompatActivity {
     private Button btnSaveIngreso;
 
     private int userId;
+    private int preMedicineId = -1; // medicamento a pre-seleccionar (si viene del listado)
     private final List<Medicine> medicines = new ArrayList<>();
 
     private static final String DB_NAME = "usuarios-db";
@@ -59,6 +60,7 @@ public class InsertIngresoStockActivity extends AppCompatActivity {
         btnSaveIngreso = findViewById(R.id.btnSaveIngreso);
 
         userId = getIntent().getIntExtra("idUsuario", -1);
+        preMedicineId = getIntent().getIntExtra("preMedicineId", -1);
 
         loadMedicines();
 
@@ -82,6 +84,16 @@ public class InsertIngresoStockActivity extends AppCompatActivity {
                         android.R.layout.simple_spinner_item, names);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerMedicine.setAdapter(adapter);
+
+                // Si venimos del listado, pre-seleccionamos ese medicamento
+                if (preMedicineId != -1) {
+                    for (int i = 0; i < medicines.size(); i++) {
+                        if (medicines.get(i).getId() == preMedicineId) {
+                            spinnerMedicine.setSelection(i);
+                            break;
+                        }
+                    }
+                }
             });
         }).start();
     }

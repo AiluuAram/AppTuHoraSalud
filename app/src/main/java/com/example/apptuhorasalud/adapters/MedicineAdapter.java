@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.example.apptuhorasalud.InsertIngresoStockActivity;
 import com.example.apptuhorasalud.R;
 import com.example.apptuhorasalud.UpdateMedicineActivity;
 import com.example.apptuhorasalud.domain.interfaces.IMedicineRepository;
@@ -24,7 +25,6 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
 
     private List<Medicine> medicineList;
     private IMedicineRepository repo;
-
 
     public MedicineAdapter(List<Medicine> medicineList, IMedicineRepository repo) {
         this.medicineList = medicineList;
@@ -44,7 +44,6 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         holder.tvMedicineName.setText(medicine.getName());
         holder.tvMedicineQuantity.setText("Cantidad: " + medicine.getQuantity() + " (mínimo: " + medicine.getStockMinimo() + ")");
 
-        // Alerta de stock bajo (HU05): aparece si el stock es menor o igual al mínimo
         if (medicine.isStockBajo()) {
             holder.tvStockBajo.setVisibility(View.VISIBLE);
         } else {
@@ -67,6 +66,15 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
             medicineList.remove(medicine);
             notifyDataSetChanged();
         });
+
+        // Registrar ingreso para ESTE medicamento (HU-LIS-01, criterio 6)
+        holder.btnIngresoMedicine.setOnClickListener(v -> {
+            Context context = holder.itemView.getContext();
+            Intent intent = new Intent(context, InsertIngresoStockActivity.class);
+            intent.putExtra("idUsuario", medicine.getUserId());
+            intent.putExtra("preMedicineId", medicine.getId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -81,7 +89,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
 
     static class MedicineViewHolder extends RecyclerView.ViewHolder {
         TextView tvMedicineName, tvMedicineQuantity, tvStockBajo;
-        Button btnUpdateMedicine, btnDeleteMedicine;
+        Button btnUpdateMedicine, btnDeleteMedicine, btnIngresoMedicine;
 
         public MedicineViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +98,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
             tvStockBajo = itemView.findViewById(R.id.tvStockBajo);
             btnUpdateMedicine = itemView.findViewById(R.id.btnUpdateMedicine);
             btnDeleteMedicine = itemView.findViewById(R.id.btnDeleteMedicine);
+            btnIngresoMedicine = itemView.findViewById(R.id.btnIngresoMedicine);
         }
     }
 }
